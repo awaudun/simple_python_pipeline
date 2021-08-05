@@ -1,0 +1,28 @@
+name: a_workflow_name
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: setup
+        uses: actions/setup-python@v2
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      
+      - name: Lint with black
+        run: |
+          pip install black
+          black . --check
+      
+      - name: Running pytests
+        run: |
+          pytest demo_pytest/test_my_awesome_module.py
